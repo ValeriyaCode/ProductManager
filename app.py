@@ -21,7 +21,12 @@ def index():
 
         return redirect(url_for('index'))
 
-    return render_template('index.html')
+    return render_template('index.html', products=products)
+
+
+@app.route('/delete/<index>')
+def delete(index):
+    print(index)
 
 
 app.run(debug=True)

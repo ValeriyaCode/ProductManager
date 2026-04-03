@@ -23,5 +23,35 @@
       <button type="submit">Додати</button>
   </form>
 
+  <h3>Товари:</h3>
+
+  <table border="1px" cellpadding="5px">
+      <thead>
+          <tr>
+              <td>Name</td>
+              <td>Price</td>
+              <td>Category</td>
+              <td>Action</td>
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in products %}
+          <tr>
+            <td>{{ item['name'] }}</td>
+            <td>{{ item['price'] }}</td>
+            <td>{{ item['category'] }}</td>
+            <td>
+
+              <!-- loop.index - повертає порядковий номер ітерації (повторення) -->
+              <a href="{{ url_for('delete', index=loop.index0) }}">
+                <button type="submit">Delete</button>
+              </a>
+
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+
 </body>
 </html>
