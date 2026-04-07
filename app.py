@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from models import init_db
+from action_db import *
 
 app = Flask(__name__)
 app.secret_key = '123'
+init_db()
+
 products = [
     {'name': 'phone', 'price': 3000, 'category': 'device'},
     {'name': 'notebook', 'price': 100, 'category': 'school'}
