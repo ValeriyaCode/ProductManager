@@ -15,9 +15,10 @@ def index():
         category = request.form.get('category').lower()
 
         if product_exist(name):
-            flash('Такий товар вже є!')
+            flash('Такий товар вже є!', category='error')
         else:
             add_product(name, price, category)
+            flash('Товар додано!', category='success')
 
         return redirect(url_for('index'))
 
@@ -41,7 +42,8 @@ def index():
 
 @app.route('/delete/<index>')
 def delete(index):
-    print(index)
+    flash('Товар видалено!', category='success')
+    return redirect(url_for('index'))
 
 
 app.run(debug=True)

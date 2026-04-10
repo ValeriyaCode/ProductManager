@@ -3,77 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <title>ProductManager</title>
+
+  <!-- Підключаємо файл зі стилями-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <h1>Product Manager</h1>
 
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <p>{{ message }}</p>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+  <!-- Шапка -->
+  <header class="header">
+    <div class="container">
 
-  <form method="POST">
-      <input type="text" name="name" placeholder="Назва" required>
-      <input type="number" name="price" placeholder="Ціна" required>
-      <input type="text" name="category" placeholder="Категорія" required>
+      <!--Логотип-->
+      <div class="logo">
+        <a href="/">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="logo">
+          <span>PRODUCT MANAGER</span>
+        </a>
+      </div>
 
-      <button type="submit">Додати</button>
-  </form>
+    </div>
 
-  <!--
-  select - випадаючий список
-  option - пункт списку
+  </header>
 
-  value - значення, яке отримає сервер
-  selected - обраний пункт зі списку по замовчуванню
-  -->
+  <!-- Основна частина-->
+  <main>
+    <div class="container">
 
-  <form method="GET">
-    <select name="category">
-      <option value="all" {% if choice_category=='all' %} selected {% endif %}>All</option>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
 
-      {% for row in categories %}
-        <option value="{{ row.category }}" {% if choice_category==row.category %} selected {% endif %} >
-          {{ row.category.title() }}
-        </option>
-      {% endfor %}
-    </select>
+      <form method="POST">
+          <input type="text" name="name" placeholder="Назва" required>
+          <input type="number" name="price" placeholder="Ціна" required>
+          <input type="text" name="category" placeholder="Категорія" required>
 
-    <button type="submit">Застосувати</button>
-  </form>
+          <button type="submit">Додати</button>
+      </form>
 
-  <h3>Товари:</h3>
+      <form method="GET">
+        <select name="category">
+          <option value="all" {% if choice_category=='all' %} selected {% endif %}>All</option>
 
-  <table border="1px" cellpadding="5px">
-      <thead>
-          <tr>
-              <td>Name</td>
-              <td>Price</td>
-              <td>Category</td>
-              <td>Action</td>
-          </tr>
-      </thead>
-      <tbody>
-        {% for item in products %}
-          <tr>
-            <td>{{ item['name'] }}</td>
-            <td>{{ item['price'] }}</td>
-            <td>{{ item['category'] }}</td>
-            <td>
+          {% for row in categories %}
+            <option value="{{ row.category }}" {% if choice_category==row.category %} selected {% endif %} >
+              {{ row.category.title() }}
+            </option>
+          {% endfor %}
+        </select>
 
-              <!-- loop.index - повертає порядковий номер ітерації (повторення) -->
-              <a href="{{ url_for('delete', index=loop.index0) }}">
-                <button type="submit">Delete</button>
-              </a>
+        <button type="submit">Застосувати</button>
+      </form>
 
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-  </table>
+      <h3>Товари:</h3>
+
+      <table border="1px" cellpadding="5px">
+          <thead>
+              <tr>
+                  <td>Name</td>
+                  <td>Price</td>
+                  <td>Category</td>
+                  <td>Action</td>
+              </tr>
+          </thead>
+          <tbody>
+            {% for item in products %}
+              <tr>
+                <td>{{ item['name'] }}</td>
+                <td>{{ item['price'] }}</td>
+                <td>{{ item['category'] }}</td>
+                <td>
+
+                  <!-- loop.index - повертає порядковий номер ітерації (повторення) -->
+                  <a href="{{ url_for('delete', index=loop.index0) }}">
+                    <button type="submit">Delete</button>
+                  </a>
+
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+
+    </div>
+  </main>
+
+  <!--javascript для flash-->
+  <script>
+    setTimeout(() => {
+    document.querySelectorAll('.flash').forEach(el =>el.remove());
+    },3000);
+  </script>
 
 </body>
 </html>
