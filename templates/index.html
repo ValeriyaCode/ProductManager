@@ -95,8 +95,14 @@
   <!--javascript для flash-->
   <script>
     setTimeout(() => {
-    document.querySelectorAll('.flash').forEach(el =>el.remove());
-    },3000);
+      const flashes = document.querySelectorAll('.flash');
+
+      flashes.forEach(el => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 500);
+      });
+
+    }, 3000);
   </script>
 
 </body>
