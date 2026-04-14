@@ -18,6 +18,7 @@ def index():
             flash('Такий товар вже є!')
         else:
             add_product(name, price, category)
+            flash('Товар додано!')
 
         return redirect(url_for('index'))
 
