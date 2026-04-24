@@ -116,4 +116,8 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/edit')
+def edit():
+    return render_template('edit.html')
+
 app.run(debug=True)
