@@ -66,7 +66,7 @@ Product Manager
               <td>
 
                 <!-- loop.index - повертає порядковий номер ітерації (повторення) -->
-                <a href="{{ url_for('delete', name=item['name']) }}">
+                <a href="{{ url_for('product.delete', name=item['name']) }}">
                   <button type="submit" class="btn btn-danger ">Видалити</button>
                 </a>
 
