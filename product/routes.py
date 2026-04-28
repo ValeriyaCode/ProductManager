@@ -30,29 +30,40 @@ def index():
         category = request.form.get('category').lower()
 
         if product_exist(name, company.id):
-            flash('Такий товар вже є!')
+            flash('Такий товар вже є!', category='danger')
         else:
             add_product(name, price, category, company.id)
-            flash('Товар додано!')
+            flash('Товар додано!', category='success')
 
         return redirect(url_for('product.index'))
 
-    # збираємо всі категорії
     all_categories = get_all_categories(company.id)
 
     # фіксуємо обрану категорії
     choice_category = request.args.get('category', 'all')
 
-    # фільтруємо список товарів
     if choice_category == 'all':
         filter_products = get_all_products(company.id)
     else:
         filter_products = get_product_by_category(choice_category, company.id)
 
+    # СОРТУВАННЯ
+    choice_sort = request.args.get('sort', 'all')
+
+    if choice_sort == 'name_asc':
+        filter_products = sorted(filter_products, key=lambda product: product.name)
+    elif choice_sort == 'name_desc':
+        filter_products = sorted(filter_products, key=lambda product: product.name, reverse=True)
+    elif choice_sort == 'price_asc':
+        filter_products = sorted(filter_products, key=lambda product: product.price)
+    elif choice_sort == 'price_desc':
+        filter_products = sorted(filter_products, key=lambda product: product.price, reverse=True)
+
     return render_template('product/index.html',
                            products=filter_products,
                            categories=all_categories,
-                           choice_category=choice_category)
+                           choice_category=choice_category,
+                           choice_sort=choice_sort)
 
 
 @product_bp.route('/delete/<name>')
@@ -63,7 +74,7 @@ def delete(name):
     company = current_company()
     delete_product(name, company.id)
 
-    flash(f'Товар {name} - видалено!')
+    flash(f'Товар {name} - видалено!', category='success')
     return redirect(url_for('product.index'))
 
 
