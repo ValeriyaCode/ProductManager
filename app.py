@@ -1,5 +1,6 @@
 from flask import Flask
 from models import init_db
+import os
 
 # імпортація BLUEPRINT
 from product.routes import product_bp
@@ -13,4 +14,5 @@ init_db()
 app.register_blueprint(product_bp)
 app.register_blueprint(auth_bp)
 
-app.run(debug=True)
+port=int(os.environ.get("PORT",5000))
+app.run(host="0.0.0.0",port=port)
